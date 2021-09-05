@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>FLASK和PYCHARTS交互</title>
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <style>
+          .menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+    width: 240px;
+    height: 100%;
+    transform: translate3d(-240px, 0, 0);
+    transition: transform 0.35s;
+  }
+  .menu label.menu-toggle {
+    position: absolute;
+    right: -60px;
+    width: 60px;
+    height: 60px;
+    line-height: 0px;
+    display: block;
+    padding: 0;
+    text-indent: -9999px;
+    background: #fff url(menu-alt-512.png) 50% 50%/25px 25px no-repeat;
+  }
+  .menu ul li > label {
+    background: url(icon-arrow-right-b-128.png) 95% 50%/16px 16px no-repeat;
+  }
+  .menu ul li a, .menu ul li label {
+    display: block;
+    text-align: center;
+    padding: 0 20px;
+    line-height: 60px;
+    text-decoration: none;
+    color: #000;
+  }
+  .menu ul li a:hover, .menu ul li label:hover {
+    color: #666;
+  }
+  
+  /* hide inputs */          
+  .menu-checkbox {
+    display: none;
+  }
+  
+  /* hide navigation icon for sublabels */    
+  .menu .menu label.menu-toggle {
+    background: none;
+  }
+  
+  /* fade in checked menu */    
+  .menu-checkbox:checked + .menu {
+    transform: translate3d(0, 0, 0);
+  }
+  
+    </style>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+</head>
+<body>
+    <input type="checkbox" id="menu" name="menu" class="menu-checkbox">
+    <div class="menu">
+      <label class="menu-toggle" for="menu"><span>Toggle</span></label>
+      <ul>
+        <li>
+          <a href="/choice1">UPload CSV Data</a>
+        </li>
+        <li>
+          <a href="/choice2">Display Whole Network</a>
+        </li>
+        <li>
+          <a href="/choice3">Display One's Network</a>
+        </li>
+        <li>
+          <a href="/choice4">New Friend Find</a>
+        </li>
+        <li>
+          <a href="/welcome">Welcome Page</a>
+        </li>
+      </ul>
+    </div>
+  </div><!-- #wrapper -->
+  
+    <div id="bar" style="width:600px; height:400px;"></div>
+    <script>
+        $(
+            function () {
+                var chart = echarts.init(document.getElementById('bar'), 'pink', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "http://127.0.0.1:5000/barChart",
+                    dataType: 'json',
+                    success: function (result) {
+                        chart.setOption(result);
+                    }
+                });
+            }
+        )
+    </script>
+</body>
+</html>
+
